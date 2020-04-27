@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { Menu } from 'antd';
+import { Menu, Icon } from 'antd';
 import axios from 'axios';
 import { USER_SERVER } from '../../../Config';
 import { withRouter } from 'react-router-dom';
@@ -21,20 +21,31 @@ function RightMenu(props) {
 
   if (user.userData && !user.userData.isAuth) {
     return (
+      //로그인 하지 않은 사람이 보는 페이지
       <Menu mode={props.mode}>
         <Menu.Item key="mail">
-          <a href="/login">Signin</a>
+          <a href="/login">들어가기</a>
         </Menu.Item>
         <Menu.Item key="app">
-          <a href="/register">Signup</a>
+          <a href="/register">가입하기</a>
         </Menu.Item>
       </Menu>
     )
-  } else {
-    return (
+    // 로그인 한 사람이 보는 페이지
+  } else {   
+    return ( 
       <Menu mode={props.mode}>
+        <Menu.Item key="History">
+          <a href="/">History</a>
+        </Menu.Item>
+         <Menu.Item key="upload">
+          <a href="/product/upload">상품 올리기</a>
+        </Menu.Item>
+        <Menu.Item key="Favorite">
+         <a href="/"><Icon type="shop" spin="true" theme="filled"/>장바구니</a>
+        </Menu.Item>
         <Menu.Item key="logout">
-          <a onClick={logoutHandler}>Logout</a>
+          <a onClick={logoutHandler}>나가기</a>
         </Menu.Item>
       </Menu>
     )
