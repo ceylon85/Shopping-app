@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone';
 import {Icon} from 'antd';
 import Axios from 'axios';
 
-function FileUpload(props) {
+function FileUpload() {
 
     //이미지 정보를 state에 저장, array안에 string이 들어갈 수 있게!
     const [Images,
