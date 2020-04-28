@@ -3,54 +3,46 @@ import Dropzone from 'react-dropzone';
 import {Icon} from 'antd';
 import Axios from 'axios';
 
-function FileUpload() {
+function FileUpload(props) {
 
-    // const [FilePath,
-    //     setFilePath] = useState("")
-    // const [Duration,
-    //     setDuration] = useState("")
-    // const [Thumbnail,
-    //     setThumbnail] = useState("")
-    // const onDrop = (files) => {
+    //이미지 정보를 state에 저장, array안에 string이 들어갈 수 있게!
+    const [Images,
+        setImages] = useState([])
 
-    //     let formData = new FormData();
-    //     const config = {
-    //         header: {
-    //             'content-type': 'multipart/form-data'
-    //         }
-    //     }
-    //     formData.append("file", files[0])
+    const onDrop = (files) => {
+        //파일을 전할때 같이 전달해야 된다.
+        let formData = new FormData();
+        //back에서 어떤 타입인지 content 타입을 정해서 back에서 request를 받을 때 error 가 없이 받을 수 있게 해주는 것
+        const config = {
+            header: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+        //formData에 append를 하여 업로드하는 파일에 대한 정보가 들어간다.
+        formData.append("file", files[0])
 
-    //     Axios
-    //         .post('/api/product/upload', formData, config)
-    //         .then(response => {
-    //             if (response.data.success) {
+        Axios
+            .post('/api/product/image', formData, config)
+            .then(response => { 
+                //response 안에 파일의 정보가 있음
+                if (response.data.success) {
+                    setImages([...Images, response.data.filePath])
+                    
+                } else {
+                    alert('파일 저장에 실패했습니다')
+                }
+            })
 
-    //                 let variable = {
-    //                     filePath: response.data.filePath,
-    //                     fileName: response.data.fileName
-    //                 }
-    //                 setFilePath(response.data.filePath)
+    }
 
-    //                 //gerenate thumbnail with this filepath !
-
-    //                 Axios
-    //                     .post('/api/product/thumbnail', variable)
-    //                     .then(response => {
-    //                         if (response.data.success) {
-    //                             setDuration(response.data.fileDuration)
-    //                             setThumbnail(response.data.thumbsFilePath)
-    //                         } else {
-    //                             alert('썸네일 생성에 실패했습니다.');
-    //                         }
-    //                     })
-
-    //             } else {
-    //                 alert('상품 저장에 실패했습니다')
-    //             }
-    //         })
-
-    // }
+    const onDelete = (image) => {
+        const currentIndex = Images.indexOf(image)
+        //Images의 정보의 값을 newImages에 복제 
+        let newImages = [...Images]
+        newImages.splice(currentIndex, 1)
+        //현재 index 부터 1개의 이미지를 삭제
+        setImages(newImages)
+    }
 
     return (
         <div
@@ -58,7 +50,7 @@ function FileUpload() {
             display: 'flex',
             justifyContent: 'space-between'
         }}>
-            <Dropzone  multiple={false} maxSize={800000000}>
+            <Dropzone onDrop={onDrop}>
                 {({getRootProps, getInputProps}) => (
                     <div
                         style={{
@@ -81,10 +73,27 @@ function FileUpload() {
                     </div>
                 )}
             </Dropzone>
-            {/* {Thumbnail !== "" && <div>
-                <img src={`http://localhost:5000/${Thumbnail}`} alt="haha"/>
-            </div> */}
 
+            <div
+                style={{
+                display: 'flex',
+                width: '350px',
+                height: '240px',
+                overflowX: 'scroll'
+            }}>
+                {Images.map((image, index) => (
+                    //index를 갖기 위해 이미지를 넣어준다.
+                    <div onClick={()=> onDelete(image)} key={index}>
+                        <img
+                            style={{
+                            minWidth: '300px',
+                            width: '300px',
+                            height: '240px'
+                        }}
+                            src={`http://localhost:5000/${image}`}/>
+                    </div>
+                ))}
+            </div> 
         </div>
     )
 }

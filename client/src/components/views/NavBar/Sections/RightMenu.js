@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { Menu, Icon } from 'antd';
+import { Menu, Icon, Badge } from 'antd';
 import axios from 'axios';
 import { USER_SERVER } from '../../../Config';
 import { withRouter } from 'react-router-dom';
@@ -41,9 +41,14 @@ function RightMenu(props) {
          <Menu.Item key="upload">
           <a href="/product/upload">상품 올리기</a>
         </Menu.Item>
-        <Menu.Item key="Favorite">
-         <a href="/"><Icon type="shop" spin="true" theme="filled"/>장바구니</a>
+
+        <Menu.Item key="cart" style={{ paddingBottom: 3 }}>
+        <Badge >
+         <a href="/user/cart" style={{ marginRight: -22 , color:'#667777'}}>
+           <Icon type="shopping-cart" style={{ fontSize: 32, marginBottom: 3 }} size="x-large" /></a>
+        </Badge>
         </Menu.Item>
+
         <Menu.Item key="logout">
           <a onClick={logoutHandler}>나가기</a>
         </Menu.Item>
