@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import {Typography, Button, Form, Input} from 'antd';
 import FileUpload from '../../utils/FileUpload';
 import Axios from 'axios';
-import {useSelector} from "react-redux";
 
 const {Title} = Typography;
 const {TextArea} = Input;
@@ -32,15 +31,13 @@ const ContinentsOptions = [
     }
 ]
 function UploadProductPage(props) {
-    const user = useSelector(state => state.user);
-
     const [ProductTitle,
         setProductTitle] = useState("")
     const [Description,
         setDescription] = useState("")
     const [Price, setPrice] = useState(0)
     const [Continent,
-        setContinent] = useState(1)
+        setContinent] = useState(0)
     const [Images, setImages] = useState([])
 
     const onTitleChange = (e) => {
@@ -57,39 +54,40 @@ function UploadProductPage(props) {
         setContinent(e.currentTarget.value)
     }
 
-    const onSubmit = (e) => {
+    //부모 컴포넌트에 있는 prop에 받는 정보들
+    const updateImages = (newImages) =>{
+        setImages(newImages)
+    }
 
+    const onSubmit = (e) => {
+        //페이지 자동 refresh 방지
         e.preventDefault();
 
-        if (user.userData && !user.userData.isAuth) {
-            return alert('로그인 먼저 해주세요')
-        }
-
-        if (ProductTitle === "" || Description === "" || Price === "" || Continent) {
+        if (!ProductTitle || !Description || !Price || !Continent || !Images) {
             return alert('빈칸 없이 채워주세요.')
         }
 
-        const variables = {
-           
+        const body = {
+            //로그인 된 사람의 Id
+            writer: props.user.userData._id,
+            title: ProductTitle,
+            description: Description,
+            price: Price,
+            images: Images,
+            continents: Continent
+
         }
-        //variables 를 가지고 request를 보냄
-        Axios
-            .post('/api/product/upload', variables)
+        //서버에 채운 값들(body)을 가지고 request를 보냄
+        Axios.post('/api/product', body)
             .then(response => {
                 if (response.data.success) {
-                    alert('업로드에 성공!')
-
-                    setTimeout(() => {
-                        props
-                            .history
-                            .push('/')
-                    }, 3000);
-
+                    alert('상품 업로드에 성공!') 
+                    props.history.push('/')
                 } else {
                     alert('상품 업로드에 실패')
                 }
             })
-    }
+    } 
 
     return (
         <div
@@ -108,7 +106,7 @@ function UploadProductPage(props) {
 
             <Form onSubmit={onSubmit}>
                
-                <FileUpload/>    
+                <FileUpload refreshFunction={updateImages}/>    
                 <br/><br/>
                 <label>Title</label>
                 <Input onChange={onTitleChange} value={ProductTitle}/>
@@ -119,14 +117,14 @@ function UploadProductPage(props) {
                 <label>Price($)</label>
                 <Input type="number" onChange={onPriceChange} value={Price}/>
                 <br/><br/>
-                <select onChange={onContinentChange} value={3}>
+                <select onChange={onContinentChange}>
                     {ContinentsOptions.map(item => (
-                        <option key={item.key} value={item.key}>{item.value}</option>
+                        <option key={item.key} value={Continent}>{item.value}</option>
                     ))}
                 </select>
                 <br/><br/>
 
-                <Button type="success" size="large" onClick={onSubmit}>
+                <Button type="submit" size="large" onClick={onSubmit}>
                     확인
                 </Button>
 
