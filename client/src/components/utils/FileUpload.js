@@ -14,7 +14,7 @@ function FileUpload(props) {
         let formData = new FormData();
         //back에서 어떤 타입인지 content 타입을 정해서 back에서 request를 받을 때 error 가 없이 받을 수 있게 해주는 것
         const config = {
-            header: { 'content-type': 'multipart/fomr-data' }
+            header: { 'content-type': 'multipart/form-data' }
         }
         //formData에 append를 하여 업로드하는 파일에 대한 정보가 들어간다.
         formData.append("file", files[0])
@@ -44,13 +44,21 @@ function FileUpload(props) {
     }
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between' 
+            }}>
+
             <Dropzone onDrop={dropHandler}>
                 {({ getRootProps, getInputProps }) => (
                     <div
                         style={{
-                            width: 300, height: 240, border: '1px solid lightgray',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                            width: 300, 
+                            height: 240, 
+                            border: '1px solid lightgray',
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center'
                         }}
                         {...getRootProps()}>
                         <input {...getInputProps()} />
@@ -59,13 +67,20 @@ function FileUpload(props) {
                 )}
             </Dropzone>
 
-            <div style={{ display: 'flex', width: '350px', height: '240px', overflowX: 'scroll' }}>
+            <div style={{ 
+                display: 'flex', 
+                width: '350px', 
+                height: '240px', 
+                overflowX: 'scroll' }}>
                         
             {Images.map((image, index) => (
                 //index를 갖기 위해 이미지를 넣어준다.
 
                     <div onClick={() => deleteHandler(image)} key={index}>
-                        <img style={{ minWidth: '300px', width: '300px', height: '240px' }}
+                        <img style={{ 
+                            minWidth: '300px', 
+                            width: '300px', 
+                            height: '240px' }}
                             src={`http://localhost:5000/${image}`}
                             alt="haha"
                         />
