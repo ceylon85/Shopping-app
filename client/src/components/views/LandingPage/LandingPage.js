@@ -19,7 +19,7 @@ function LandingPage() {
         setProducts] = useState([])
     const [Skip, setSkip] = useState(0)
     const [Limit, setLimit] = useState(8)
-    const [PostSize, setPostSize] = useState([])
+    const [PostSize, setPostSize] = useState(0)
     useEffect(() => {
         let body = {
             skip: Skip,
@@ -40,7 +40,7 @@ function LandingPage() {
                 }else{
                     setProducts(response.data.productInfo)
                 }
-                setPostSize(response.data.PostSize)
+                setPostSize(response.data.postSize)
             } else {
                 alert('상품들을 가져오는데 실패')
             }
