@@ -10,6 +10,8 @@ import {
 } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import ImageSlider from '../../utils/ImageSlider';
+import CheckBox from './Sections/CheckBox';
+import { continents } from './Sections/Data';
 
 const {Title} = Typography;
 
@@ -72,6 +74,10 @@ function LandingPage() {
         </Col>
     })
 
+    const handleFilters = () =>{
+
+    }
+
     return (
 
         <div
@@ -82,11 +88,17 @@ function LandingPage() {
             <div style={{
                 textAlign: 'center'
             }}>
-                <Title>Let`s Travel Anywhere!!!<Icon type="rocket"/></Title><hr/>
+                <Title>Let`s Travel Anywhere!!!<Icon type="rocket"/></Title>
             </div>
 
             {/* Filter */}
 
+ 
+            {/* CheckBox */}
+            <CheckBox list={continents} handleFilters={filters => handleFilters(filters, "continents")}/>
+            {/* RadioBox */}
+
+            <hr/>
             {/* Search */}
 
             {/* Cards */}
