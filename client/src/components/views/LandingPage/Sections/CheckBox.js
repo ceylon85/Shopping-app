@@ -12,7 +12,7 @@ function CheckBox(props) {
         const currentIndex = Checked.indexOf(value)
         //spread Operator를 이용해 전체 Checked data를 가져옴
         const newChecked = [...Checked]  
-        //currentIndex 가 -1이면 값이 없는 것인
+        //currentIndex 가 -1이면 값이 없는 것
         if(currentIndex === -1){
             //state를 넣어준다
             newChecked.push(value)        
