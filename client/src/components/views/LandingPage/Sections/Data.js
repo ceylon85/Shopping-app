@@ -33,7 +33,7 @@ const continents = [
 const price = [
     {
         "_id": 0,
-        "name": "Any",
+        "name": "전체",
         "array": []
     },
     {
