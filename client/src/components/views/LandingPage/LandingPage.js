@@ -37,7 +37,7 @@ function LandingPage() {
 
     const getProducts = (body) =>{
         Axios
-        .post('/api/product/products', body)
+        .post('/api/product/getProducts', body)
         .then(response => {
             if (response.data.success) {
                 if(body.loadMore){
@@ -89,13 +89,33 @@ function LandingPage() {
         setSkip(0)
     }
 
-
+    const handlePrice = (value)=>{
+       const data = price;
+       let array = [];
+       
+       for(let key in data){
+           if(data[key]._id === parseInt(value, 10)){
+               array = data[key].array;
+               //data[key].array; === "array": [0, 199]
+           } 
+       }
+       return array;
+    }
+     
     const handleFilters = (filters, category) =>{
         const newFilters = {...Filters}
         // 새로운 newChecked를 firlters로 바꿔줌
         newFilters[category] = filters
+        console.log("filters", filters);
+
+        if(category === "price"){
+
+            let priceValues = handlePrice(filters)
+            newFilters[category] = priceValues
+        }
 
         showFilteredResults(newFilters)
+        setFilters(newFilters)
     }
 
     return (

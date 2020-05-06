@@ -43,7 +43,7 @@ router.post('/', (req, res) => {
     })
 });
 
-router.post('/products', (req, res) => {
+router.post('/getProducts', (req, res) => {
 
     let limit = req.body.limit ? parseInt(req.body.limit) : 20;
     let skip = req.body.skip ? parseInt(req.body.skip) : 0;
@@ -53,9 +53,22 @@ router.post('/products', (req, res) => {
         //filters state에 key값은 continent와 price
         //값으로 1이상 들어있다면
         if(req.body.filters[key].length>0){
-            findArgs[key] = req.body.filters[key];
-        }
+            console.log('key', key);
+
+            if (key === "price") {
+                findArgs[key] = {
+                    //greater than equal
+                    $gte: req.body.filters[key][0],
+                    ///less than equal
+                    $lte: req.body.filters[key][1]
+                }
+            } else {
+                findArgs[key] = req.body.filters[key];
+            }
+        } 
     }
+    console.log('findArgs', findArgs);
+
     //product collection에 들어 있는 모든 상품 정보를 가져오기
     Product.find(findArgs).populate("writer")
             .skip(skip)
