@@ -13,7 +13,7 @@ import ImageSlider from '../../utils/ImageSlider';
 import CheckBox from './Sections/CheckBox';
 import { continents, price } from './Sections/Data';
 import RadioBox from './Sections/RadioBox';
-
+import SearchFeature from './Sections/SearchFeature';
 const {Title} = Typography;
 
 function LandingPage() {
@@ -24,6 +24,7 @@ function LandingPage() {
     const [Limit, setLimit] = useState(8)
     const [PostSize, setPostSize] = useState(0) 
     const [Filters, setFilters] = useState({continents: [], price: []})
+    const [SearchTerm, setSearchTerm] = useState("")
 
     useEffect(() => {
         let body = {
@@ -118,6 +119,10 @@ function LandingPage() {
         setFilters(newFilters)
     }
 
+    const updateSearchTerm = (newSearchTerm) =>{
+        setSearchTerm(newSearchTerm)
+    }
+
     return (
 
         <div
@@ -145,8 +150,12 @@ function LandingPage() {
  
            
 
-            <hr/>
+            
             {/* Search */}
+            <div style={{display:'flex', justifyContent:'flex-end', margin:'1rem auto'}}>
+            <SearchFeature refreshFunction={updateSearchTerm}/>
+            </div>
+            <hr/>
 
             {/* Cards */}
             <Row gutter={[16, 16]}>
