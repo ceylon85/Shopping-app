@@ -112,7 +112,7 @@ function LandingPage() {
             </div>
 
             {/* Filter */}
-            <Row gutter={[16,26]}>
+            <Row gutter={[16,16]}>
                 <Col lg={12} xs={24}>
                  {/* CheckBox */}
             <CheckBox list={continents} handleFilters={filters => handleFilters(filters, "continents")}/>

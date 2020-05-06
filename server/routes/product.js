@@ -50,6 +50,8 @@ router.post('/products', (req, res) => {
 
     let findArgs = {};
     for(let key in req.body.filters){
+        //filters state에 key값은 continent와 price
+        //값으로 1이상 들어있다면
         if(req.body.filters[key].length>0){
             findArgs[key] = req.body.filters[key];
         }
