@@ -68,4 +68,54 @@ router.get("/logout", auth, (req, res) => {
     });
 });
 
+router.post("/addToCart", auth, (req, res)=>{
+    //먼저 User 컬렉션에서 해당 유저의 모든 정보를 가져오기
+    //auth안에 있는 req.user === user
+    User.findOne({_id: req.user._id},
+        (err, userInfo)=>{
+    //가져온 정보에서 카트에 넣으려 하는 상품이 이미 들어있는지 확인
+            let duplicatie = false;
+            userInfo.cart.forEach((item)=>{
+                if(item.id === req.body.productId){
+                    duplicatie = true; 
+                }
+            })   
+            //상품이 이미 있다면
+            if(duplicatie){
+            User.findOneAndUpdate(
+                {_id: req.user._id, "cart.id" :req.body.productId},
+                {$inc: {"cart.$.quantity": 1} },
+                {new: true},
+                (err, userInfo)=>{
+                    if(err) return res.status(400).json({success: false, err})
+                    res.status(200).send(userInfo.cart)
+                }
+            )
+            //상품이 없을 때
+            }else{
+            User.findOneAndUpdate(
+                //id를 추가하고
+                {_id: req.user._id},
+                //mongoDB의 Push 를 사용 정보를 넣어준다.
+                //기본정보는 id/수량/날짜
+                { 
+                    $push:{
+                        cart:{
+                            id:req.body.productId,
+                            quantity: 1,
+                            date: Date.now()
+                        }
+                    }
+                },
+                {new: true},
+                (err, userInfo)=>{
+                    if(err) return res.status(400).json({success: false, err})
+                    res.status(200).send(userInfo.cart)
+                }
+            )
+            }
+    })
+
+});
+
 module.exports = router;
