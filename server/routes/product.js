@@ -84,7 +84,7 @@ router.post('/getProducts', (req, res) => {
                 success: true, productInfo,
                 postSize: productInfo.length})
     })
-
+    //product collection에 들어 있는 모든 상품 정보를 가져오기
     }else{
         Product.find(findArgs).populate("writer")
         .skip(skip)
@@ -98,6 +98,16 @@ router.post('/getProducts', (req, res) => {
 }
 })
 
-    //product collection에 들어 있는 모든 상품 정보를 가져오기
-    
+router.get('/products_by_id', (req, res) => {
+    let type = req.query.type
+    let productId = req.query.id
+//productId를 이용, DB에서 productId와 같은 상품 정보를 가져온다
+    Product.find({_id: productId})
+    .populate('writer')
+    .exec((err, product)=>{
+        if(err) return res.status(400).send(err)
+        return res.status(200).send({success: true, product})
+    })
+});
+
 module.exports = router;

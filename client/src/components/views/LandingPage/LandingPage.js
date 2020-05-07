@@ -70,7 +70,8 @@ function LandingPage() {
     const renderCards = Products.map((product, index) => {
         return <Col key={index} lg={6} md={8} xs={24} >
             <Card 
-            cover={< ImageSlider image={product.images} />}>
+            cover={<a href={`/product/${product._id}`}><ImageSlider image={product.images} /></a>}
+                >
                 <Meta 
                 title={product.title} 
                 description={`$${product.price}`}/>
@@ -162,7 +163,7 @@ function LandingPage() {
 
             
             {/* Search */}
-            <div style={{display:'flex', justifyContent:'flex-end', margin:'1rem auto'}}>
+            <div style={{display:'flex', justifyContent:'center', margin:'1rem auto'}}>
             <SearchFeature refreshFunction={updateSearchTerm}/>
             </div>
             <hr/>
