@@ -18,6 +18,8 @@ router.get("/auth", auth, (req, res) => {
         lastname: req.user.lastname,
         role: req.user.role,
         image: req.user.image,
+        cart: req.user.cart,
+        history: req.user.history
     });
 });
 
@@ -76,6 +78,7 @@ router.post("/addToCart", auth, (req, res)=>{
     //가져온 정보에서 카트에 넣으려 하는 상품이 이미 들어있는지 확인
             let duplicatie = false;
             userInfo.cart.forEach((item)=>{
+            //item id와 상품 id가 하나라도 같으면 동일 상품 존재
                 if(item.id === req.body.productId){
                     duplicatie = true; 
                 }
@@ -83,9 +86,11 @@ router.post("/addToCart", auth, (req, res)=>{
             //상품이 이미 있다면
             if(duplicatie){
             User.findOneAndUpdate(
+                //먼저 user를 찾고, cart를 찾는다
                 {_id: req.user._id, "cart.id" :req.body.productId},
                 {$inc: {"cart.$.quantity": 1} },
                 {new: true},
+                //userInfo에 update한 정보를 받기 위해 new: true 옵션을 줘야 한다
                 (err, userInfo)=>{
                     if(err) return res.status(400).json({success: false, err})
                     res.status(200).send(userInfo.cart)
@@ -107,6 +112,7 @@ router.post("/addToCart", auth, (req, res)=>{
                         }
                     }
                 },
+                //update한 정보를 얻기 위해 주는 옵션
                 {new: true},
                 (err, userInfo)=>{
                     if(err) return res.status(400).json({success: false, err})
