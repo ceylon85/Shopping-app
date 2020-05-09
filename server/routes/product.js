@@ -100,9 +100,16 @@ router.post('/getProducts', (req, res) => {
 
 router.get('/products_by_id', (req, res) => {
     let type = req.query.type
-    let productId = req.query.id
+    let productIds = req.query.id
+
+    if(typs === "array"){
+        let ids = req.query.id.split(',')
+        productIds = ids.map(item =>{
+            return item
+        })
+    }
 //productId를 이용, DB에서 productId와 같은 상품 정보를 가져온다
-    Product.find({_id: productId})
+    Product.find({_id: { $in: productIds}})
     .populate('writer')
     .exec((err, product)=>{
         if(err) return res.status(400).send(err)
