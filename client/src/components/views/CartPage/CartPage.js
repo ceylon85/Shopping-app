@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import React,{useEffect} from 'react'
 import {useDispatch} from 'react-redux';
 import {getCartItems} from '../../../_actions/user_actions';
 
@@ -19,7 +19,7 @@ function CartPage(props) {
             }
         }
 
-    }, [])
+    }, [props.user.userData])
 
     return (
         <div>
