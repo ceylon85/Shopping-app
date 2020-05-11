@@ -107,15 +107,17 @@ router.get("/products_by_id", (req, res) => {
     console.log("req.query.id", req.query.id)
 
     if (type === "array") {
+        //split을 사용, ,를 기점으로 자른다.
         let ids = req.query.id.split(',');
         productIds = [];
+        //map을 사용해서 새로운 array에 모두 넣어준다.
         productIds = ids.map(item => {
             return item
         })
     }
     console.log("productIds", productIds)
 
-//productId를 이용, DB에서 productId와 같은 상품 정보를 가져온다
+//productIds를 이용, DB에서 productId와 같은 상품 정보를 가져온다
     Product.find({_id: { $in: productIds}})
     .populate('writer')
     .exec((err, product)=>{
