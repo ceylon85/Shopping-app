@@ -7,21 +7,16 @@ import ProductInfo from './Sections/ProductInfo';
 const {Title} = Typography; 
 
 function DetailProductPage(props) {
- 
+
     const productId = props.match.params.productId
     const [Product, setProduct] = useState({})
 
     useEffect(() => {
-
         Axios.get(`/api/product/products_by_id?id=${productId}&type=single`)
-        .then(response=>{
-            if(response.data.success){
-                console.log('성공하면', response.data)
-                setProduct(response.data.product[0])
-            }else{
-                alert('상세 정보를 가져오는데 실패했습니다.')
-            }
+            .then(response => {
+                setProduct(response.data[0])
         })
+        .catch(err => alert(err))
     }, [])
 
     return (

@@ -26,7 +26,9 @@ export default function(state={},action){
                     }
                  }
         case GET_CART_ITEMS:
-            return {...state, cartDetail: action.payload}
+            return {
+                ...state, cartDetail: action.payload
+            }
         default:
             return state;
     }

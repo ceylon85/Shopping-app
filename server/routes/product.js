@@ -98,22 +98,29 @@ router.post('/getProducts', (req, res) => {
 }
 })
 
-router.get('/products_by_id', (req, res) => {
+//?id=${productId}&type=single
+//id=12121212,121212,1212121   type=array 
+router.get("/products_by_id", (req, res) => {
     let type = req.query.type
     let productIds = req.query.id
 
-    if(typs === "array"){
-        let ids = req.query.id.split(',')
-        productIds = ids.map(item =>{
+    console.log("req.query.id", req.query.id)
+
+    if (type === "array") {
+        let ids = req.query.id.split(',');
+        productIds = [];
+        productIds = ids.map(item => {
             return item
         })
     }
+    console.log("productIds", productIds)
+
 //productId를 이용, DB에서 productId와 같은 상품 정보를 가져온다
     Product.find({_id: { $in: productIds}})
     .populate('writer')
     .exec((err, product)=>{
         if(err) return res.status(400).send(err)
-        return res.status(200).json({success: true, product})
+        return res.status(200).send(product)
     })
 });
 
