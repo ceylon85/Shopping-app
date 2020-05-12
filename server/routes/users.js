@@ -124,4 +124,10 @@ router.post("/addToCart", auth, (req, res)=>{
 
 });
 
+router.get('/removeFromCart', auth,(req,res)=>{
+
+    
+})
+
+
 module.exports = router;
