@@ -91,12 +91,20 @@ export function removeCartItem(productId){
     const request = axios.get(`/api/users/removeFromCart?id=${productId}`)
     .then(response => {
         
+    //user route에서 보낸 productInfo와 cart 정보를 조합
+    response.data.cart.forEach(item =>{
+        response.data.productInfo.forEach((product, index)=> {
+            if(item.id === product._id){
+                response.data.productInfo[index].quantity = item.quantity
+            }
+        })
+    })
+    //새로운 response.data가 완성 
         return response.data;
     });
-
+    //user_reducer로 보내준다.
     return {
         type: REMOVE_CART_ITEM,
         payload: request
     }
 }
-removeCartItem
