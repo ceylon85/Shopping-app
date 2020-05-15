@@ -1,10 +1,9 @@
-import React,{useEffect, useState} from 'react'
+import React,{ useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import {getCartItems, removeCartItem, onSuccessBuy} from '../../../_actions/user_actions';
+import { getCartItems, removeCartItem, onSuccessBuy } from '../../../_actions/user_actions';
 import UserCardBlock from './Sections/UserCardBlock';
-import {Typography, Empty} from 'antd';
+import { Typography, Empty, Result } from 'antd';
 import Paypal from '../../utils/Paypal';
-import { response } from 'express';
 
 const {Title} = Typography; 
 
@@ -13,7 +12,7 @@ function CartPage(props) {
     const dispatch = useDispatch();
     const [Total, setTotal] = useState(0)
     const [ShowTotal, setShowTotal] = useState(false)
-
+    const [ShowSuccess, setShowSuccess] = useState(false)
     useEffect(() => {
         let cartItems = [];
         //리덕스 user state 안에 cart 안에 상품이 있는지 확인
@@ -75,15 +74,21 @@ function CartPage(props) {
             <UserCardBlock products={props.user.cartDetail} removeItem={removeFromCart}/>
             </div>
 
-            {ShowTotal ?
+        
+        {ShowTotal ?
             <div style={{marginTop: '3rem'}}>
                   <h2>총 금액: $ {Total}</h2>
             </div>
+            : ShowSuccess ? 
+            <Result 
+            status="success"
+            title="상품 구매에 성공했습니다."/>
             :
-            <> 
+            
             <Empty description={false}/>
-            </>
+            
             }
+
             {ShowTotal &&
             
              <Paypal total={Total}

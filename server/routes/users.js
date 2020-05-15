@@ -4,7 +4,7 @@ const { User } = require("../models/User");
 const { Product } = require("../models/Product");
 const { Payment } = require("../models/Payment");
 const { auth } = require("../middleware/auth");
-
+const async = require("async");
 //=================================
 //             User
 //=================================
@@ -180,20 +180,43 @@ router.get('/successBuy', auth,(req,res)=>{
         //history 정보 저장
         User.findOneAndUpdate(
             { _id: req.user._id},
-            { $push: {history: history}, $set: {cart: []}},
+            {   $push: {history: history},
+                $set: {cart: []} },
             { new: true },
             (err, user)=> {
-                if(err) return res.json({success: false, err})
-                res.json({success: true, data})
-
+            if(err) return res.json({success: false, err})
+                
             //payment 에다가 transactionData 정보 저장
             const payment = new Payment(transactionData)
             payment.save((err, doc)=>{
                 if(err) return res.json({success: false, err})
 
             //3. Product Collection 안에 있는 Sold 필드 정보 업데이트 넣어주기
-            
+            //상품 당 몇개의 quantity가 있는지
+            let products = [];
+            //doc는 payment에 대한 정보가 들어있음
+            doc.product.forEach(item=> {
+                //products 빈 array에  id,quantity 넣는다.
+                products.push({id: item.id, quantity:item.quantity})
             })
+            async.eachSeries(products, (item, callback)=>{
+                Product.update(
+                    {_id: item.id},
+                    { $inc: {
+                        "sold": item.quantity
+                    }}, 
+                    {new: false},
+                callback
+                )
+             }, (err)=> {
+                if(err) return res.status(400).json({ success: false, err})
+                res.status(200).json({
+                    success: true,
+                    cart: user.cart,
+                    cartDetail: []
+                })
+            })
+        })
         }
     )
 })

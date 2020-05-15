@@ -8,7 +8,7 @@ import {
     REMOVE_CART_ITEM,
     ON_SUCCESS_BUY
 } from '../_actions/types';
-
+ 
 export default function (state = {}, action) {
     switch (action.type) {
         case REGISTER_USER:
@@ -55,8 +55,10 @@ export default function (state = {}, action) {
         case ON_SUCCESS_BUY:
             return {
                 ...state,
-                payment: action.payload,
-                cartDetail: action.payload
+                cartDetail: action.payload.cartDetail,
+                userData: {
+                    ...state.userData, cart: action.payload.cart
+                }
             }
         default:
             return state;
