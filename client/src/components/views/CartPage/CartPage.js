@@ -1,9 +1,10 @@
 import React,{useEffect, useState} from 'react'
 import { useDispatch } from 'react-redux';
-import {getCartItems, removeCartItem} from '../../../_actions/user_actions';
+import {getCartItems, removeCartItem, onSuccessBuy} from '../../../_actions/user_actions';
 import UserCardBlock from './Sections/UserCardBlock';
 import {Typography, Empty} from 'antd';
 import Paypal from '../../utils/Paypal';
+import { response } from 'express';
 
 const {Title} = Typography; 
 
@@ -52,6 +53,21 @@ function CartPage(props) {
         })
     }
 
+    const transactionSuccess = (data) =>{
+        dispatch(onSuccessBuy({
+            //결제 성공했을 시 페이팔에서 준 정보
+            paymentData: data,
+            //기존 redux에서 가지고 있던 카트의 정보
+            cartDetail: props.user.cartDetail
+
+        }))
+        .then(response => {
+            if(response.data.success){
+                setShowTotal(false)
+            }
+        })
+    }
+
     return (
         <div style = {{width: '85%', margin: '3rem auto'}}>
             <Title>My Cart</Title> 
@@ -70,7 +86,8 @@ function CartPage(props) {
             }
             {ShowTotal &&
             
-             <Paypal total={Total} />
+             <Paypal total={Total}
+             onSuccess={transactionSuccess} />
          }
         </div>
     )
