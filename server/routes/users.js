@@ -153,11 +153,11 @@ router.get('/removeFromCart', auth,(req,res)=>{
 
 })
 
-router.get('/successBuy', auth,(req,res)=>{
+router.post('/successBuy', auth,(req,res)=>{
     //1. User Collection 안에 history 필드 안에 간단한 결제 정보 넣어주기
     let = history = [];
     let = transactionData = {};
-    
+    //redux에 있는 cartDetail 이용
     req.body.cartDetail.forEach((item) => {
         history.push({
             dateOfPurchase : Date.now(),
@@ -165,23 +165,24 @@ router.get('/successBuy', auth,(req,res)=>{
             id: item._id,
             price: item.price,
             quantity: item.quantity,
-            paymentId: req.body.paymentData.paymentId
+            paymentId: req.body.paymentData.paymentID
         })
     })
-    //2. Payment Collection 안에 자세한 결제 정보를 넣어주기
+    //2. Payment Collection 안에 자세한 결제 정보들 넣어주기
     transactionData.user = {
         id: req.user._id,
         name: req.user.name,
         email: req.user.email
     }
-
+    //카트페이지에 있는 paymentData에 모든 정보가 있음
     transactionData.data = req.body.paymentData
+    //User collection에 들어간 history의 정보와 같음
     transactionData.product = history
-        //history 정보 저장
+        //모아둔 정보를 user Collection의 history 에 저장
         User.findOneAndUpdate(
             { _id: req.user._id},
             {   $push: {history: history},
-                $set: {cart: []} },
+                $set: {cart: []} },//결제가 끝나면 카트를 비운다
             { new: true },
             (err, user)=> {
             if(err) return res.json({success: false, err})
@@ -192,20 +193,21 @@ router.get('/successBuy', auth,(req,res)=>{
                 if(err) return res.json({success: false, err})
 
             //3. Product Collection 안에 있는 Sold 필드 정보 업데이트 넣어주기
-            //상품 당 몇개의 quantity가 있는지
+            //상품 당 몇개의 quantity가 있는지(몇 개를 샀는지..)
             let products = [];
             //doc는 payment에 대한 정보가 들어있음
             doc.product.forEach(item=> {
                 //products 빈 array에  id,quantity 넣는다.
-                products.push({id: item.id, quantity:item.quantity})
+                products.push({ id: item.id, quantity: item.quantity })
             })
+
             async.eachSeries(products, (item, callback)=>{
                 Product.update(
                     {_id: item.id},
                     { $inc: {
                         "sold": item.quantity
                     }}, 
-                    {new: false},
+                    {new: false},//업데이트 된 doc를 프론트에 보내주지 않는다.
                 callback
                 )
              }, (err)=> {
@@ -213,7 +215,7 @@ router.get('/successBuy', auth,(req,res)=>{
                 res.status(200).json({
                     success: true,
                     cart: user.cart,
-                    cartDetail: []
+                    cartDetail: [] //결제가 성공하면 카트가 빈다.
                 })
             })
         })

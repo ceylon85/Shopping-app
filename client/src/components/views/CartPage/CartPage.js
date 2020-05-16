@@ -61,8 +61,13 @@ function CartPage(props) {
 
         }))
         .then(response => {
-            if(response.data.success){
+            if(response.payload.success){
+                setShowSuccess(true)
                 setShowTotal(false)
+                setTimeout(()=> {
+                    props.history.push('/')
+                },3000)
+                
             }
         })
     }
@@ -80,9 +85,9 @@ function CartPage(props) {
                   <h2>총 금액: $ {Total}</h2>
             </div>
             : ShowSuccess ? 
-            <Result 
-            status="success"
-            title="상품 구매에 성공했습니다."/>
+                <Result 
+                status="success"
+                title="상품 구매에 성공했습니다."/>
             :
             
             <Empty description={false}/>

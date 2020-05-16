@@ -38,6 +38,7 @@ function RightMenu(props) {
         <Menu.Item key="history">
           <a href="/history">History</a>
         </Menu.Item>
+
          <Menu.Item key="upload">
           <a href="/product/upload">상품 올리기</a>
         </Menu.Item>
