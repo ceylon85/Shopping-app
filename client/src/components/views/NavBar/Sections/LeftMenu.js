@@ -22,9 +22,7 @@ return (
   <Menu.Item key="mail">
     <a href="/">홈</a>
   </Menu.Item>
-  <Menu.Item key="">
-    <a href="/">구 독</a>
-  </Menu.Item>
+  
 </Menu>
 )
 }

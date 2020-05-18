@@ -13,8 +13,9 @@ function HistoryPage(props) {
                 <thead>
                     <tr>
                         <th>Payment Id</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
+                        <th>가격</th>
+                        <th>수량</th>
+                        <th>총금액</th>
                         <th>Date of Purchase</th>
                     </tr>
                 </thead>
@@ -27,6 +28,7 @@ function HistoryPage(props) {
                                 <td>{item.id}</td>
                                 <td>{item.price}</td>
                                 <td>{item.quantity}</td>
+                                <td>{item.quantity*item.price}</td>
                                 <td>{item.dateOfPurchase}</td>
                             </tr>
                         ))}

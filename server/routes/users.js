@@ -155,8 +155,9 @@ router.get('/removeFromCart', auth,(req,res)=>{
 
 router.post('/successBuy', auth,(req,res)=>{
     //1. User Collection 안에 history 필드 안에 간단한 결제 정보 넣어주기
-    let = history = [];
-    let = transactionData = {};
+    let history = [];
+    let transactionData = {};
+
     //redux에 있는 cartDetail 이용
     req.body.cartDetail.forEach((item) => {
         history.push({
@@ -219,6 +220,17 @@ router.post('/successBuy', auth,(req,res)=>{
                 })
             })
         })
+        }
+    )
+})
+
+router.get('/getHistory', auth, (req, res) => {
+    User.findOne(
+        { _id: req.user._id },
+        (err, doc) => {
+            let history = doc.history;
+            if (err) return res.status(400).send(err)
+            return res.status(200).json({ success: true, history })
         }
     )
 })
