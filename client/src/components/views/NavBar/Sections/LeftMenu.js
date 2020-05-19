@@ -11,8 +11,8 @@ function LeftMenu(props) {
     <Menu.Item key="mail">
       <a href="/">홈</a>
     </Menu.Item>
-    <Menu.Item key="" hidden={true}>
-      <a href="/">구 독</a>
+    <Menu.Item key="history" hidden={true}>
+      <a href="/history">History</a>
     </Menu.Item>
   </Menu>
   )
@@ -21,6 +21,10 @@ return (
   <Menu mode={props.mode}>
   <Menu.Item key="mail">
     <a href="/">홈</a>
+  </Menu.Item>
+  <Menu.Item key="history">
+    <a href="/history">History</a>
+  
   </Menu.Item>
   
 </Menu>
