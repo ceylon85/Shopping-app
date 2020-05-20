@@ -2,6 +2,7 @@
 Mern stack shopping-app
 
 # `LandingPage.js`
+![ezgif com-video-to-gif](https://user-images.githubusercontent.com/45006553/82416633-51c75f00-9ab5-11ea-9b0d-4578b9f2848b.gif)
 
 
 ### `Components`: 
