@@ -1,6 +1,6 @@
 # `Shopping-app`
-Mern stack shopping-app
-
+#### Mern stack shopping-app
+# 
 ## `LandingPage.js`
 ![ezgif com-video-to-gif](https://user-images.githubusercontent.com/45006553/82416633-51c75f00-9ab5-11ea-9b0d-4578b9f2848b.gif)
 
@@ -11,7 +11,7 @@ Mern stack shopping-app
 - `SearchFeature` 
 - `Data(In Boxes)` 
 - `ImageSlider`: `Carousel`
-  
+#  
 ## `DetailPage.js && CartPage.js` 
 ![ezgif com-video-to-gif (1)](https://user-images.githubusercontent.com/45006553/82417410-7b34ba80-9ab6-11ea-9cb4-7db733ba3e2c.gif)
 
@@ -26,7 +26,7 @@ Mern stack shopping-app
 - `UserCardBlock` : 상품 리스트 간단한 표로 구성
 - `Paypal` : 상품 결제 관련 npm 
 
-
+#
 ## `Paypal.js && HistoryPage.js` 
 ![ezgif com-video-to-gif](https://user-images.githubusercontent.com/45006553/82418084-7e7c7600-9ab7-11ea-9fcc-0c4aa5f1ee64.gif)
 
@@ -34,13 +34,13 @@ Mern stack shopping-app
 - `History` : 상품 구매 내역
 ##### `npm` : `react-paypal-express-checkout`
 
-
+#
 ## `UploadProductPage.js` 
 ![ezgif com-video-to-gif (2)](https://user-images.githubusercontent.com/45006553/82418654-390c7880-9ab8-11ea-971a-97cd27dcc794.gif)
 
 ##### `npm` : `Dropzone`
 
-
+#
 ## `Server Part(MongoDB cluster)` 
 ![ezgif com-video-to-gif (3)](https://user-images.githubusercontent.com/45006553/82419745-c3091100-9ab9-11ea-9ae7-9dda8f875e1d.gif)
 
