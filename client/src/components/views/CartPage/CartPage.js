@@ -89,9 +89,17 @@ function CartPage(props) {
                 status="success"
                 title="상품 구매에 성공했습니다."/>
             :
-            
+            <div style={{
+                width: '100%', display: 'flex', flexDirection: 'column',
+                justifyContent: 'center'
+            }}>
+                <br />
+                <br />
             <Empty description={false}/>
-            
+            <br/>
+            <br/>
+            <p style={{textAlign:'center' ,fontSize:'32px'}}>카트에 담긴 상품이 없습니다.</p>
+            </div>
             }
 
             {ShowTotal &&
